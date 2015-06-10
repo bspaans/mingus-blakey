@@ -10,8 +10,55 @@ meter: 4/4
 resolution: 12
 
 section:
-C-h h-h h-h h-h h-h h-h h-h h-h
-b-- s-- b-- s-- b-- s-- b-- sss
+C-h h-h h-h h-h h-h h-h h-h h-h    h-h h-h h-h h-h h-h h-C h-h C-h
+b-- s-- b-- s-- b-- s-- b-- sss    b-- s-- b-- s-- b-- s-- b-- s--
+
+"""
+
+# build up beats from base blocks?
+# blocks are named drum patterns
+# use named sequences to combine patterns
+# room for experimental combinations (mixing, ANDing, ORing, XORing repeating patterns)
+#    and procedural generation
+# 
+# could provide a "standard library" of base blocks with drum rudiments
+#
+
+future_format = """
+bpm: 120    
+
+meter: 4/4
+resolution: 12
+
+block: start_with_crash
+C-h h-h
+b-- s--
+
+block: regular
+h-h h-h
+b-- s--
+
+block: ending
+h-h h-h
+b-- sss
+
+sequence: bar
+start_with_crash
+regular
+regular
+ending
+
+sequence: bar_without_crash_at_start
+regular
+regular
+regular
+ending
+
+sequence: main
+bar
+bar_without_crash_at_start
+bar_without_crash_at_start
+bar_without_crash_at_start
 
 """
 
