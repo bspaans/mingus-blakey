@@ -4,14 +4,14 @@ from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.containers import Track, Bar, NoteContainer, Note
 
 example = """
-bpm: 120    
+bpm: 80
 
 meter: 4/4
 resolution: 12
 
 section:
-C-h h-h h-h h-h h-h h-h h-h h-h    h-h h-h h-h h-h h-h h-C h-h C-h
-b-- s-- b-- s-- b-- s-- b-- sss    b-- s-- b-- s-- b-- s-- b-- s--
+C-h h-h h-h h-h h-h h-h h-h h-h    h-h h-h h-h h-h h-h h-C h-h C-h C-h h-h h-h h-h h-h h-h h-h h-h    h-h h-h h-h h-h h-h h-C h-h C-h C-h h-h h-h h-h h-h h-h h-h h-h    h-h h-h h-h h-h h-h h-C h-h C-h C-h h-h h-h h-h h-h h-h h-h h-h    h-h h-h h-h h-h h-h h-C h-h C-h
+b-- s-- b-- s-- b-- s-- b-- sss    b-- s-- b-- s-- b-- s-b b-- s-- b-- s-- b-- s-- b-- s-- b-- sss    b-- s-- b-- s-- b-- s-b b-- s-- b-- s-- b-- s-- b-- s-- b-- sss    b-- s-- b-- s-- b-- s-b b-- s-- b-- s-- b-- s-- b-- s-- b-- sss    b-- s-- b-- s-- b-- s-b b-- s-- 
 
 """
 
