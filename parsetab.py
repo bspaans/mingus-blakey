@@ -5,9 +5,9 @@ _tabversion = '3.5'
 
 _lr_method = 'LALR'
 
-_lr_signature = '9F82242EFE59547F393F44D2D8EA6B0C'
+_lr_signature = '801D72B46E971F88F7072913388A6481'
     
-_lr_action_items = {'IDENT':([14,19,20,36,],[24,31,34,24,]),'SEQUENCE':([0,18,],[11,11,]),'PATTERN':([0,18,],[10,10,]),'NEWLINE':([1,3,4,6,7,9,14,16,22,23,24,25,26,27,28,29,31,32,33,34,35,36,37,38,39,],[14,-5,-6,-4,16,18,-3,-3,-7,-10,36,-17,-11,-14,37,-18,-16,-12,-15,-8,-19,-3,-3,-9,-13,]),'BPM':([0,18,],[5,5,]),'PATTERN_LINE':([16,37,],[28,28,]),'COLON':([5,8,10,11,12,],[15,17,19,20,21,]),'INTEGER':([15,17,19,21,],[25,29,33,35,]),'RESOLUTION':([0,18,],[12,12,]),'LOOP':([0,18,],[8,8,]),'$end':([0,2,13,18,30,],[-3,0,-2,-3,-1,]),}
+_lr_action_items = {'IDENT':([14,19,20,38,],[25,32,35,25,]),'SEQUENCE':([0,18,22,],[11,11,11,]),'PATTERN':([0,18,22,],[10,10,10,]),'NEWLINE':([0,1,3,4,6,7,9,13,14,16,18,22,23,24,25,26,27,28,29,30,32,33,34,35,36,38,39,40,41,],[-4,14,-6,-7,-5,16,18,22,-4,-4,-4,-4,-8,-11,38,-18,-12,-15,39,-19,-17,-13,-16,-9,-20,-4,-4,-10,-14,]),'BPM':([0,18,22,],[5,5,5,]),'PATTERN_LINE':([16,39,],[29,29,]),'COLON':([5,8,10,11,12,],[15,17,19,20,21,]),'INTEGER':([15,17,19,21,],[26,30,34,36,]),'RESOLUTION':([0,18,22,],[12,12,12,]),'LOOP':([0,18,22,],[8,8,8,]),'$end':([0,2,13,18,22,31,37,],[-4,0,-3,-4,-4,-1,-2,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -16,7 +16,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'sequence_header':([0,18,],[1,1,]),'sequence_body':([14,36,],[22,38,]),'statements':([0,18,],[2,30,]),'sequence':([0,18,],[3,3,]),'pattern':([0,18,],[4,4,]),'pattern_header':([0,18,],[7,7,]),'var_decl':([0,18,],[6,6,]),'pattern_body':([16,37,],[26,39,]),'value':([19,],[32,]),'statement':([0,18,],[9,9,]),'empty':([0,14,16,18,36,37,],[13,23,27,13,23,27,]),}
+_lr_goto_items = {'sequence_header':([0,18,22,],[1,1,1,]),'sequence_body':([14,38,],[23,40,]),'statements':([0,18,22,],[2,31,37,]),'sequence':([0,18,22,],[3,3,3,]),'pattern':([0,18,22,],[4,4,4,]),'pattern_header':([0,18,22,],[7,7,7,]),'var_decl':([0,18,22,],[6,6,6,]),'pattern_body':([16,39,],[27,41,]),'value':([19,],[33,]),'statement':([0,18,22,],[9,9,9,]),'empty':([0,14,16,18,22,38,39,],[13,24,28,13,13,24,28,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,22 +27,23 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> statements","S'",1,None,None,None),
   ('statements -> statement NEWLINE statements','statements',3,'p_statements','yacc.py',49),
-  ('statements -> empty','statements',1,'p_statements','yacc.py',50),
-  ('empty -> <empty>','empty',0,'p_empty','yacc.py',54),
-  ('statement -> var_decl','statement',1,'p_statement','yacc.py',58),
-  ('statement -> sequence','statement',1,'p_statement','yacc.py',59),
-  ('statement -> pattern','statement',1,'p_statement','yacc.py',60),
-  ('sequence -> sequence_header NEWLINE sequence_body','sequence',3,'p_sequence','yacc.py',64),
-  ('sequence_header -> SEQUENCE COLON IDENT','sequence_header',3,'p_sequence_header','yacc.py',69),
-  ('sequence_body -> IDENT NEWLINE sequence_body','sequence_body',3,'p_sequence_body','yacc.py',73),
-  ('sequence_body -> empty','sequence_body',1,'p_sequence_body','yacc.py',74),
-  ('pattern -> pattern_header NEWLINE pattern_body','pattern',3,'p_pattern','yacc.py',78),
-  ('pattern_header -> PATTERN COLON value','pattern_header',3,'p_pattern_header','yacc.py',83),
-  ('pattern_body -> PATTERN_LINE NEWLINE pattern_body','pattern_body',3,'p_pattern_body','yacc.py',87),
-  ('pattern_body -> empty','pattern_body',1,'p_pattern_body','yacc.py',88),
-  ('value -> INTEGER','value',1,'p_value_integer','yacc.py',94),
-  ('value -> IDENT','value',1,'p_value_integer','yacc.py',95),
-  ('var_decl -> BPM COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',99),
-  ('var_decl -> LOOP COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',100),
-  ('var_decl -> RESOLUTION COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',101),
+  ('statements -> empty NEWLINE statements','statements',3,'p_statements','yacc.py',50),
+  ('statements -> empty','statements',1,'p_statements','yacc.py',51),
+  ('empty -> <empty>','empty',0,'p_empty','yacc.py',56),
+  ('statement -> var_decl','statement',1,'p_statement','yacc.py',60),
+  ('statement -> sequence','statement',1,'p_statement','yacc.py',61),
+  ('statement -> pattern','statement',1,'p_statement','yacc.py',62),
+  ('sequence -> sequence_header NEWLINE sequence_body','sequence',3,'p_sequence','yacc.py',66),
+  ('sequence_header -> SEQUENCE COLON IDENT','sequence_header',3,'p_sequence_header','yacc.py',71),
+  ('sequence_body -> IDENT NEWLINE sequence_body','sequence_body',3,'p_sequence_body','yacc.py',75),
+  ('sequence_body -> empty','sequence_body',1,'p_sequence_body','yacc.py',76),
+  ('pattern -> pattern_header NEWLINE pattern_body','pattern',3,'p_pattern','yacc.py',80),
+  ('pattern_header -> PATTERN COLON value','pattern_header',3,'p_pattern_header','yacc.py',85),
+  ('pattern_body -> PATTERN_LINE NEWLINE pattern_body','pattern_body',3,'p_pattern_body','yacc.py',89),
+  ('pattern_body -> empty','pattern_body',1,'p_pattern_body','yacc.py',90),
+  ('value -> INTEGER','value',1,'p_value_integer','yacc.py',96),
+  ('value -> IDENT','value',1,'p_value_integer','yacc.py',97),
+  ('var_decl -> BPM COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',101),
+  ('var_decl -> LOOP COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',102),
+  ('var_decl -> RESOLUTION COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',103),
 ]

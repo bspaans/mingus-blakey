@@ -39,16 +39,19 @@ class Sequence(object):
         self.body = body
 
 def add_to_list(p):
-    if p[1] is None:
+    if p[1] is None and len(p) < 3:
         return []
     else:
-        p[3].insert(0, p[1])
+        if p[1] is not None:
+            p[3].insert(0, p[1])
         return p[3] 
 
 def p_statements(p):
     '''statements : statement NEWLINE statements
+                  | empty NEWLINE statements
                   | empty'''
     p[0] = add_to_list(p)
+
 
 def p_empty(p):
     '''empty :'''
