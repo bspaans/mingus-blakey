@@ -3,6 +3,19 @@ The Blakey Drum Computer
 
 # Install
 
+```
+pip install ply
+pip install mingus
+```
+
+# Usage
+
+```
+python blakey.py INPUTFILE [OUTPUTFILE]
+```
+
+The input file should be in the format described below. Defining the output file is optional and defaults to the input files path, with its extension replaced by '.mid'.
+
 # Write drum patterns as text
 
 ```
