@@ -9,6 +9,7 @@ tokens = (
   'COLON',
   'SEQUENCE',
   'PATTERN',
+  'COMBINE',
   'BPM',
   'LOOP', 
   'RESOLUTION',
@@ -17,7 +18,7 @@ tokens = (
 )
 
 
-RESERVED = ['pattern', 'sequence', 'bpm', 'loop', 'resolution']
+RESERVED = ['pattern', 'sequence', 'combine', 'bpm', 'loop', 'resolution']
 INTEGER_VARS = ['bpm', 'loop', 'resolution']
 t_INTEGER = r'[0-9]+'
 t_COLON = r':'
@@ -25,7 +26,7 @@ t_PATTERN_LINE = r'\|.*\|'
 t_NEWLINE = r'\n'
 
 def t_ID(t):
-    r'[a-zA-Z_]+'
+    r'[a-zA-Z_]+[a-zA-Z_0-9]*'
     t.type = t.value.upper() if t.value in RESERVED else 'IDENT'
     return t
 

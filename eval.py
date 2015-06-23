@@ -2,8 +2,17 @@
 
 import yacc
 import sys
+import math
+from fractions import gcd
 from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.containers import Track, Bar, NoteContainer, Note
+
+def lcm(self, *numbers):
+    """Return lowest common multiple."""    
+    def lcm(a, b):
+        return (a * b) // gcd(a, b)
+    return reduce(lcm, numbers, 1)
+
 
 class Pattern(object):
     def __init__(self, name):
@@ -14,6 +23,40 @@ class Pattern(object):
         self.attributes = ctx.copy_attributes()
     def set_body(self, body):
         self.body = body
+    def copy(self):
+        p = Pattern(self.name)
+        p.body = []
+        for beat in self.body:
+            if type(beat) == list:
+                copied_beat = []
+                for b in beat:
+                    copied_beat.append(b)
+                p.body.append(copied_beat)
+            else:
+                p.body.append(beat)
+        p.attributes = self.attributes.copy()
+        return p 
+    def __str__(self):
+        return str(self.body)
+    def get_resolution(self):
+        return self.attributes["resolution"]
+    def resample(self, new_resolution):
+        current_resolution = self.get_resolution()
+        if current_resolution == new_resolution:
+            return self.body
+
+        new_resolution = lcm(current_resolution, new_resolution)
+        beat_every = new_resolution / current_resolution
+        new_body = []
+        j = 0
+        for i in xrange(new_resolution):
+            if i % beat_every == 0:
+                new_body.append(self.body[j])
+                j += 1
+            else:
+                new_body.append(None)
+        self.body = new_body
+        self.attributes["resolution"] = new_resolution
 
 
 class Context(object):
@@ -42,7 +85,10 @@ def merge_pattern_bodies(bodies):
             if beat is not None:
                 if result[i] is None:
                     result[i] = []
-                result[i].append(beat)
+                if type(beat) is list:
+                    result[i].extend(beat)
+                else:
+                    result[i].append(beat)
     return result
 
 def eval_pattern_body(body):
@@ -65,15 +111,48 @@ def eval_pattern(ctx, pattern):
     result.set_body(body)
     ctx.set(pattern.name, result)
 
+def eval_section(ctx, section):
+    if section.section_type == 'combine':
+        return eval_combine(ctx, section)
+    elif section.section_type == 'sequence':
+        return eval_sequence(ctx, section)
+
 def eval_sequence(ctx, sequence):
     result = []
     for pattern in sequence.body:
         ptrn = ctx.get(pattern)
         if type(ptrn) is Pattern:
+            result.append(ptrn.copy())
+        else:
+            result.extend(map(lambda p: p.copy(), ptrn))
+    ctx.set(sequence.name, result)
+
+
+def lookup_patterns(ctx, patterns):
+    result = []
+    for p in patterns:
+        ptrn = ctx.get(p)
+        if type(ptrn) is Pattern:
             result.append(ptrn)
         else:
             result.extend(ptrn)
-    ctx.set(sequence.name, result)
+    return result
+
+def merge_two_patterns(pattern1, pattern2):
+    resolution1 = pattern1.get_resolution()
+    resolution2 = pattern2.get_resolution()
+    if resolution1 != resolution2:
+        new_resolution = lcm(resolution1, resolution2)
+        pattern1.resample(new_resolution)
+        pattern2.resample(new_resolution)
+    bodies = [pattern1.body, pattern2.body]
+    pattern1.set_body(merge_pattern_bodies(bodies))
+    return pattern1
+
+def eval_combine(ctx, section):
+    patterns = lookup_patterns(ctx, section.body)
+    result = reduce(merge_two_patterns, patterns)
+    ctx.set(section.name, result)
 
 def get_result_of_last_statement(ctx, statement):
     if statement is None:
@@ -86,6 +165,8 @@ percussion = MidiPercussionInstrument()
 def convert_pattern_char_to_note(char):
     if char == 'h':
         return percussion.closed_hi_hat()
+    elif char == 'H':
+        return percussion.open_hi_hat()
     elif char == '-':
         return None
     elif char == 'b':
@@ -127,8 +208,8 @@ def eval_statements(statements):
         elif type(statement) is yacc.Pattern:
             eval_pattern(ctx, statement)
             last_statement = statement.name
-        elif type(statement) is yacc.Sequence:
-            eval_sequence(ctx, statement)
+        elif type(statement) is yacc.Section:
+            eval_section(ctx, statement)
             last_statement = statement.name
     return get_result_of_last_statement(ctx, last_statement), ctx
 
@@ -137,4 +218,4 @@ def eval_file(file):
 
 
 if __name__ == '__main__':
-    eval_file(sys.argv[1])
+    print eval_file(sys.argv[1])

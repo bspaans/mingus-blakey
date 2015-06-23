@@ -1,0 +1,31 @@
+bpm: 150
+
+resolution: 2
+pattern: hihat_2
+|hh|
+
+resolution: 4
+pattern: hihat_4
+|hhhh|
+
+resolution: 8
+pattern: hihat_8
+|hhhhhhhh|
+
+resolution: 16
+pattern: hihat_16
+|hhhhhhhhhhhhhhhh|
+
+pattern: partA
+|b---s-bsbsb-s---|
+
+combine: partA_with_hihat
+hihat_4
+partA
+
+sequence: beat
+partA_with_hihat 
+partA_with_hihat 
+partA_with_hihat 
+partA_with_hihat 
+

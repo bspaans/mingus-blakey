@@ -5,6 +5,17 @@ import sys
 
 from lexer import tokens, INTEGER_VARS
 
+class Section(object):
+    def __init__(self, section_type, name):
+        self.section_type = section_type
+        self.name = name
+        self.body = []
+    def __str__(self):
+        return '%s: %s\n%s' % (self.section_type.lower(), self.name, "\n".join(self.body))
+    def __repr__(self):
+        return str(self)
+    def set_body(self, body):
+        self.body = body
 
 class Pattern(object):
     def __init__(self, name):
@@ -28,16 +39,6 @@ class VarDecl(object):
     def __repr__(self):
         return str(self)
 
-class Sequence(object):
-    def __init__(self, name):
-        self.name = name
-    def __str__(self):
-        return 'sequence: %s\n%s' % (self.name, "\n".join(self.body))
-    def __repr__(self):
-        return str(self)
-    def set_body(self, body):
-        self.body = body
-
 def add_to_list(p):
     if p[1] is None and len(p) < 3:
         return []
@@ -59,23 +60,30 @@ def p_empty(p):
 
 def p_statement(p):
     '''statement : var_decl
-                 | sequence
+                 | section
                  | pattern'''
     p[0] = p[1]
 
-def p_sequence(p):
-    '''sequence : sequence_header NEWLINE sequence_body'''
+def p_section(p):
+    '''section : section_header NEWLINE section_body'''
     p[1].set_body(p[3])
     p[0] = p[1]
 
-def p_sequence_header(p):
-    'sequence_header : SEQUENCE COLON IDENT '
-    p[0] = Sequence(p[3])
+def p_section_header(p):
+    '''section_header : section_type COLON IDENT'''
+    p[0] = Section(p[1], p[3])
 
-def p_sequence_body(p):
-    '''sequence_body : IDENT NEWLINE sequence_body 
-                     | empty'''
+def p_section_type(p):
+    '''section_type : SEQUENCE
+                    | COMBINE'''
+    p[0] = p[1]
+
+def p_section_body(p):
+    '''section_body : IDENT NEWLINE section_body
+                    | empty '''
+
     p[0] = add_to_list(p)
+
 
 def p_pattern(p):
     'pattern : pattern_header NEWLINE pattern_body'
