@@ -1,0 +1,18 @@
+bpm: 150
+
+resolution: 4
+pattern: partA
+|hhhh|
+|bsbs|
+
+resolution: 8
+pattern: partB
+|hhhhhhhh|
+|b-s-b-s-|
+
+sequence: beat
+partA
+partB
+partA
+partB
+

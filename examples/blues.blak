@@ -1,0 +1,40 @@
+bpm: 120
+
+resolution: 12
+
+pattern: hihat_base_crash_start
+|C--h-hH--h--|
+
+pattern: hihat_4
+|h--h--h--h--|
+
+pattern: hihat_4_with_accent
+|h--h-hH--h--|
+
+pattern: basic_beat_half_time
+|b-----s-----|
+
+combine: regular_block
+hihat_4
+basic_beat_half_time
+
+combine: accented_block
+hihat_4_with_accent
+basic_beat_half_time
+
+combine: opening_block
+hihat_base_crash_start
+basic_beat_half_time
+
+sequence: beat
+opening_block
+regular_block
+accented_block
+regular_block
+
+sequence: song
+beat
+beat
+beat
+beat
+
