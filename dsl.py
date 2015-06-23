@@ -71,6 +71,13 @@ def parse_bpm_command(line):
         sys.exit(1)
     return int(bpm_str)
 
+def parse_loop_command(line):
+    loop_str = line[5:].strip()
+    if not loop_str.isdigit():
+        print "Error: loop is not an integer:", loop_str
+        sys.exit(1)
+    return int(loop_str)
+
 def parse_meter_command(line):
     meter_str = line[6:].strip()
     if meter_str.find("/") == -1:
@@ -100,17 +107,18 @@ def parse_section_line(line):
             result.append(percussion.crash_cymbal_1())
     return result
 
-def section_to_track(section, resolution, meter):
+def section_to_track(section, resolution, meter, loop):
     max_len = max(map(len, section))
     result = Track()
     result.instrument = percussion
-    for i in range(max_len):
-        nc = NoteContainer()
-        for s in section:
-            if i < len(s) and s[i] is not None:
-                nc.add_note(s[i])
-                s[i].channel = 9
-        result.add_notes(nc, resolution)
+    for x in range(loop):
+        for i in range(max_len):
+            nc = NoteContainer()
+            for s in section:
+                if i < len(s) and s[i] is not None:
+                    nc.add_note(s[i])
+                    s[i].channel = 9
+            result.add_notes(nc, resolution)
     return result
 
 def parse_string(string):
@@ -118,17 +126,21 @@ def parse_string(string):
     bpm = 120
     meter = (4, 4)
     resolution = 4
+    loop = 1
     result = []
     section = []
     in_section = False
     for line in lines:
         if line.strip() == '' or line.startswith('#') or line.startswith('//'):
             if in_section and len(section) > 0:
-                result.append(section_to_track(section, resolution, meter)) # commit section
+                result.append(section_to_track(section, resolution, meter, loop)) # commit section
                 section = []
             continue
         elif line.startswith("bpm:"):
             bpm = parse_bpm_command(line)
+            continue
+        elif line.startswith("loop:"):
+            loop = parse_loop_command(line)
             continue
         elif line.startswith("meter:"):
             meter = parse_meter_command(line)
