@@ -1,12 +1,13 @@
 #!/usr/bin/env python
 
 import argparse
+from os import path
 
 from mingus.containers import Track, Bar, NoteContainer, Note
 from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.midi import midi_file_out
 
-import dsl
+import eval
 
 class Options:
     def __init__(self, input, output = None):
@@ -15,7 +16,8 @@ class Options:
 
     def get_output_file(self):
         if self.output is None:
-            pass
+            input_base = path.splitext(self.input)[0]
+            return input_base + ".mid"
         return self.output
 
 def to_midi(filename, track, bpm = 120):
@@ -28,27 +30,16 @@ def get_args():
     parser.add_argument('input', metavar='INPUT', nargs=1, 
             help='the input file path')
     parser.add_argument('output', metavar='OUTPUT', nargs='?', 
-            help='the optional output file path. Default is ./INPUT.wav')
+            help='the optional output file path. Default is ./INPUT.mid')
     args = parser.parse_args()
     return Options(args.input[0], args.output)
 
 
-def read_input_file(opts):
-    try:
-        f = open(opts.input)
-        result = f.read()
-        f.close()
-        return result
-    except Exception, e:
-        print "Couldn't read file '%s' because:" % opts.input
-        print e
-        sys.exit(1)
 
 def main():
     options = get_args()
-    input = read_input_file(options)
-    tracks, bpm = dsl.parse_string(input)
-    to_midi(options.get_output_file(), tracks[0], bpm)
+    track, ctx = eval.eval_file(options.input)
+    to_midi(options.get_output_file(), track, ctx.get_attr("bpm"))
 
 if __name__ == '__main__':
     main()

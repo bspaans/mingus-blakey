@@ -3,7 +3,7 @@
 import ply.yacc as yacc
 import sys
 
-from lexer import tokens
+from lexer import tokens, INTEGER_VARS
 
 
 class Pattern(object):
@@ -21,6 +21,8 @@ class VarDecl(object):
     def __init__(self, name, value):
         self.name = name
         self.value = value
+        if name in INTEGER_VARS:
+            self.value = int(value)
     def __str__(self):
         return "%s: %s" % (self.name, self.value)
     def __repr__(self):

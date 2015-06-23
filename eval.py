@@ -89,7 +89,9 @@ def convert_pattern_to_mingus_track(ctx, pattern):
             result.add_notes(nc, resolution)
             continue
         for b in beat:
-            nc.add_note(convert_pattern_char_to_note(b))
+            note = convert_pattern_char_to_note(b)
+            note.channel = 9
+            nc.add_note(note)
         result.add_notes(nc, resolution)
     return result
 
@@ -105,10 +107,11 @@ def eval_statements(statements):
         elif type(statement) is yacc.Sequence:
             eval_sequence(ctx, statement)
             last_statement = statement.name
-    return get_result_of_last_statement(ctx, last_statement)
+    return get_result_of_last_statement(ctx, last_statement), ctx
 
 def eval_file(file):
-    eval_statements(yacc.parse_file(file))
+    return eval_statements(yacc.parse_file(file))
+
 
 if __name__ == '__main__':
     eval_file(sys.argv[1])

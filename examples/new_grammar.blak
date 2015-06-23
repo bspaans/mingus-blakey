@@ -9,7 +9,18 @@ pattern: part_B
 |--s---s-|
 |b---b---|
 
+pattern: part_C
+|h-h-h-h-|
+|--s-ssss|
+|b--b----|
+
 sequence: beat
 part_A
 part_B
+part_B
+part_C
+
+sequence: party
+beat
+beat
 
