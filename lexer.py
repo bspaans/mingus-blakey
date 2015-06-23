@@ -1,6 +1,7 @@
 #!/usr/bin/env python 
 
 import ply.lex as lex
+import sys
 
 tokens = (
   'IDENT', 
@@ -11,7 +12,8 @@ tokens = (
   'PATTERN',
   'BPM',
   'LOOP', 
-  'NEWLINE'
+  'PATTERN_LINE',
+  'NEWLINE',
 )
 
 
@@ -19,6 +21,7 @@ reserved = ['pattern', 'sequence', 'bpm', 'loop']
 t_INTEGER = r'[0-9]+'
 t_COLON = r':'
 t_DASH = r'\-'
+t_PATTERN_LINE = r'\|.*\|'
 t_NEWLINE = r'\n'
 
 def t_ID(t):
@@ -34,3 +37,11 @@ def t_error(t):
     t.lexer.skip(1)
 
 lexer = lex.lex()
+
+if __name__ == '__main__':
+    f = open(sys.argv[1])
+    s = f.read()
+    print s
+    lexer.input(s)
+    for token in lexer:
+        print token

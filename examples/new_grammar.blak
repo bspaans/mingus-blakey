@@ -1,0 +1,15 @@
+bpm: 150
+pattern: part_A
+|C-h-h-h-|
+|--s---s-|
+|b---b---|
+
+pattern: part_B
+|h-h-h-h-|
+|--s---s-|
+|b---b---|
+
+sequence: beat
+part_A
+part_B
+

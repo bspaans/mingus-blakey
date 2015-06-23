@@ -2,140 +2,390 @@ Created by PLY version 3.6 (http://www.dabeaz.com/ply)
 
 Unused terminals:
 
-    BPM
     DASH
-    LOOP
 
 Grammar
 
-Rule 0     S' -> statement
-Rule 1     statement -> sequence
-Rule 2     statement -> pattern
-Rule 3     sequence -> SEQUENCE COLON IDENT NEWLINE
-Rule 4     pattern -> PATTERN COLON value
-Rule 5     value -> INTEGER
-Rule 6     value -> IDENT
+Rule 0     S' -> statements
+Rule 1     statements -> statement NEWLINE statements
+Rule 2     statements -> empty
+Rule 3     empty -> <empty>
+Rule 4     statement -> var_decl
+Rule 5     statement -> sequence
+Rule 6     statement -> pattern
+Rule 7     sequence -> sequence_header NEWLINE sequence_body
+Rule 8     sequence_header -> SEQUENCE COLON IDENT
+Rule 9     sequence_body -> IDENT NEWLINE sequence_body
+Rule 10    sequence_body -> empty
+Rule 11    pattern -> pattern_header NEWLINE pattern_body
+Rule 12    pattern_header -> PATTERN COLON value
+Rule 13    pattern_body -> PATTERN_LINE NEWLINE pattern_body
+Rule 14    pattern_body -> empty
+Rule 15    value -> INTEGER
+Rule 16    value -> IDENT
+Rule 17    var_decl -> BPM COLON INTEGER
+Rule 18    var_decl -> LOOP COLON INTEGER
 
 Terminals, with rules where they appear
 
-BPM                  : 
-COLON                : 3 4
+BPM                  : 17
+COLON                : 8 12 17 18
 DASH                 : 
-IDENT                : 3 6
-INTEGER              : 5
-LOOP                 : 
-NEWLINE              : 3
-PATTERN              : 4
-SEQUENCE             : 3
+IDENT                : 8 9 16
+INTEGER              : 15 17 18
+LOOP                 : 18
+NEWLINE              : 1 7 9 11 13
+PATTERN              : 12
+PATTERN_LINE         : 13
+SEQUENCE             : 8
 error                : 
 
 Nonterminals, with rules where they appear
 
-pattern              : 2
-sequence             : 1
-statement            : 0
-value                : 4
+empty                : 2 10 14
+pattern              : 6
+pattern_body         : 11 13
+pattern_header       : 11
+sequence             : 5
+sequence_body        : 7 9
+sequence_header      : 7
+statement            : 1
+statements           : 1 0
+value                : 12
+var_decl             : 4
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . statement
-    (1) statement -> . sequence
-    (2) statement -> . pattern
-    (3) sequence -> . SEQUENCE COLON IDENT NEWLINE
-    (4) pattern -> . PATTERN COLON value
+    (0) S' -> . statements
+    (1) statements -> . statement NEWLINE statements
+    (2) statements -> . empty
+    (4) statement -> . var_decl
+    (5) statement -> . sequence
+    (6) statement -> . pattern
+    (3) empty -> .
+    (17) var_decl -> . BPM COLON INTEGER
+    (18) var_decl -> . LOOP COLON INTEGER
+    (7) sequence -> . sequence_header NEWLINE sequence_body
+    (11) pattern -> . pattern_header NEWLINE pattern_body
+    (8) sequence_header -> . SEQUENCE COLON IDENT
+    (12) pattern_header -> . PATTERN COLON value
 
-    SEQUENCE        shift and go to state 1
-    PATTERN         shift and go to state 5
+    $end            reduce using rule 3 (empty -> .)
+    BPM             shift and go to state 5
+    LOOP            shift and go to state 8
+    SEQUENCE        shift and go to state 11
+    PATTERN         shift and go to state 10
 
-    pattern                        shift and go to state 2
-    statement                      shift and go to state 4
+    sequence_header                shift and go to state 1
+    statements                     shift and go to state 2
     sequence                       shift and go to state 3
+    pattern                        shift and go to state 4
+    pattern_header                 shift and go to state 7
+    var_decl                       shift and go to state 6
+    statement                      shift and go to state 9
+    empty                          shift and go to state 12
 
 state 1
 
-    (3) sequence -> SEQUENCE . COLON IDENT NEWLINE
+    (7) sequence -> sequence_header . NEWLINE sequence_body
 
-    COLON           shift and go to state 6
+    NEWLINE         shift and go to state 13
 
 
 state 2
 
-    (2) statement -> pattern .
+    (0) S' -> statements .
 
-    $end            reduce using rule 2 (statement -> pattern .)
 
 
 state 3
 
-    (1) statement -> sequence .
+    (5) statement -> sequence .
 
-    $end            reduce using rule 1 (statement -> sequence .)
+    NEWLINE         reduce using rule 5 (statement -> sequence .)
 
 
 state 4
 
-    (0) S' -> statement .
+    (6) statement -> pattern .
 
+    NEWLINE         reduce using rule 6 (statement -> pattern .)
 
 
 state 5
 
-    (4) pattern -> PATTERN . COLON value
+    (17) var_decl -> BPM . COLON INTEGER
 
-    COLON           shift and go to state 7
+    COLON           shift and go to state 14
 
 
 state 6
 
-    (3) sequence -> SEQUENCE COLON . IDENT NEWLINE
+    (4) statement -> var_decl .
 
-    IDENT           shift and go to state 8
+    NEWLINE         reduce using rule 4 (statement -> var_decl .)
 
 
 state 7
 
-    (4) pattern -> PATTERN COLON . value
-    (5) value -> . INTEGER
-    (6) value -> . IDENT
+    (11) pattern -> pattern_header . NEWLINE pattern_body
 
-    INTEGER         shift and go to state 11
-    IDENT           shift and go to state 9
+    NEWLINE         shift and go to state 15
 
-    value                          shift and go to state 10
 
 state 8
 
-    (3) sequence -> SEQUENCE COLON IDENT . NEWLINE
+    (18) var_decl -> LOOP . COLON INTEGER
 
-    NEWLINE         shift and go to state 12
+    COLON           shift and go to state 16
 
 
 state 9
 
-    (6) value -> IDENT .
+    (1) statements -> statement . NEWLINE statements
 
-    $end            reduce using rule 6 (value -> IDENT .)
+    NEWLINE         shift and go to state 17
 
 
 state 10
 
-    (4) pattern -> PATTERN COLON value .
+    (12) pattern_header -> PATTERN . COLON value
 
-    $end            reduce using rule 4 (pattern -> PATTERN COLON value .)
+    COLON           shift and go to state 18
 
 
 state 11
 
-    (5) value -> INTEGER .
+    (8) sequence_header -> SEQUENCE . COLON IDENT
 
-    $end            reduce using rule 5 (value -> INTEGER .)
+    COLON           shift and go to state 19
 
 
 state 12
 
-    (3) sequence -> SEQUENCE COLON IDENT NEWLINE .
+    (2) statements -> empty .
 
-    $end            reduce using rule 3 (sequence -> SEQUENCE COLON IDENT NEWLINE .)
+    $end            reduce using rule 2 (statements -> empty .)
+
+
+state 13
+
+    (7) sequence -> sequence_header NEWLINE . sequence_body
+    (9) sequence_body -> . IDENT NEWLINE sequence_body
+    (10) sequence_body -> . empty
+    (3) empty -> .
+
+    IDENT           shift and go to state 22
+    NEWLINE         reduce using rule 3 (empty -> .)
+
+    sequence_body                  shift and go to state 20
+    empty                          shift and go to state 21
+
+state 14
+
+    (17) var_decl -> BPM COLON . INTEGER
+
+    INTEGER         shift and go to state 23
+
+
+state 15
+
+    (11) pattern -> pattern_header NEWLINE . pattern_body
+    (13) pattern_body -> . PATTERN_LINE NEWLINE pattern_body
+    (14) pattern_body -> . empty
+    (3) empty -> .
+
+    PATTERN_LINE    shift and go to state 26
+    NEWLINE         reduce using rule 3 (empty -> .)
+
+    pattern_body                   shift and go to state 24
+    empty                          shift and go to state 25
+
+state 16
+
+    (18) var_decl -> LOOP COLON . INTEGER
+
+    INTEGER         shift and go to state 27
+
+
+state 17
+
+    (1) statements -> statement NEWLINE . statements
+    (1) statements -> . statement NEWLINE statements
+    (2) statements -> . empty
+    (4) statement -> . var_decl
+    (5) statement -> . sequence
+    (6) statement -> . pattern
+    (3) empty -> .
+    (17) var_decl -> . BPM COLON INTEGER
+    (18) var_decl -> . LOOP COLON INTEGER
+    (7) sequence -> . sequence_header NEWLINE sequence_body
+    (11) pattern -> . pattern_header NEWLINE pattern_body
+    (8) sequence_header -> . SEQUENCE COLON IDENT
+    (12) pattern_header -> . PATTERN COLON value
+
+    $end            reduce using rule 3 (empty -> .)
+    BPM             shift and go to state 5
+    LOOP            shift and go to state 8
+    SEQUENCE        shift and go to state 11
+    PATTERN         shift and go to state 10
+
+    sequence_header                shift and go to state 1
+    statements                     shift and go to state 28
+    sequence                       shift and go to state 3
+    pattern                        shift and go to state 4
+    pattern_header                 shift and go to state 7
+    var_decl                       shift and go to state 6
+    statement                      shift and go to state 9
+    empty                          shift and go to state 12
+
+state 18
+
+    (12) pattern_header -> PATTERN COLON . value
+    (15) value -> . INTEGER
+    (16) value -> . IDENT
+
+    INTEGER         shift and go to state 31
+    IDENT           shift and go to state 29
+
+    value                          shift and go to state 30
+
+state 19
+
+    (8) sequence_header -> SEQUENCE COLON . IDENT
+
+    IDENT           shift and go to state 32
+
+
+state 20
+
+    (7) sequence -> sequence_header NEWLINE sequence_body .
+
+    NEWLINE         reduce using rule 7 (sequence -> sequence_header NEWLINE sequence_body .)
+
+
+state 21
+
+    (10) sequence_body -> empty .
+
+    NEWLINE         reduce using rule 10 (sequence_body -> empty .)
+
+
+state 22
+
+    (9) sequence_body -> IDENT . NEWLINE sequence_body
+
+    NEWLINE         shift and go to state 33
+
+
+state 23
+
+    (17) var_decl -> BPM COLON INTEGER .
+
+    NEWLINE         reduce using rule 17 (var_decl -> BPM COLON INTEGER .)
+
+
+state 24
+
+    (11) pattern -> pattern_header NEWLINE pattern_body .
+
+    NEWLINE         reduce using rule 11 (pattern -> pattern_header NEWLINE pattern_body .)
+
+
+state 25
+
+    (14) pattern_body -> empty .
+
+    NEWLINE         reduce using rule 14 (pattern_body -> empty .)
+
+
+state 26
+
+    (13) pattern_body -> PATTERN_LINE . NEWLINE pattern_body
+
+    NEWLINE         shift and go to state 34
+
+
+state 27
+
+    (18) var_decl -> LOOP COLON INTEGER .
+
+    NEWLINE         reduce using rule 18 (var_decl -> LOOP COLON INTEGER .)
+
+
+state 28
+
+    (1) statements -> statement NEWLINE statements .
+
+    $end            reduce using rule 1 (statements -> statement NEWLINE statements .)
+
+
+state 29
+
+    (16) value -> IDENT .
+
+    NEWLINE         reduce using rule 16 (value -> IDENT .)
+
+
+state 30
+
+    (12) pattern_header -> PATTERN COLON value .
+
+    NEWLINE         reduce using rule 12 (pattern_header -> PATTERN COLON value .)
+
+
+state 31
+
+    (15) value -> INTEGER .
+
+    NEWLINE         reduce using rule 15 (value -> INTEGER .)
+
+
+state 32
+
+    (8) sequence_header -> SEQUENCE COLON IDENT .
+
+    NEWLINE         reduce using rule 8 (sequence_header -> SEQUENCE COLON IDENT .)
+
+
+state 33
+
+    (9) sequence_body -> IDENT NEWLINE . sequence_body
+    (9) sequence_body -> . IDENT NEWLINE sequence_body
+    (10) sequence_body -> . empty
+    (3) empty -> .
+
+    IDENT           shift and go to state 22
+    NEWLINE         reduce using rule 3 (empty -> .)
+
+    sequence_body                  shift and go to state 35
+    empty                          shift and go to state 21
+
+state 34
+
+    (13) pattern_body -> PATTERN_LINE NEWLINE . pattern_body
+    (13) pattern_body -> . PATTERN_LINE NEWLINE pattern_body
+    (14) pattern_body -> . empty
+    (3) empty -> .
+
+    PATTERN_LINE    shift and go to state 26
+    NEWLINE         reduce using rule 3 (empty -> .)
+
+    pattern_body                   shift and go to state 36
+    empty                          shift and go to state 25
+
+state 35
+
+    (9) sequence_body -> IDENT NEWLINE sequence_body .
+
+    NEWLINE         reduce using rule 9 (sequence_body -> IDENT NEWLINE sequence_body .)
+
+
+state 36
+
+    (13) pattern_body -> PATTERN_LINE NEWLINE pattern_body .
+
+    NEWLINE         reduce using rule 13 (pattern_body -> PATTERN_LINE NEWLINE pattern_body .)
 
