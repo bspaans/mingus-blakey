@@ -5,7 +5,7 @@ _tabversion = '3.5'
 
 _lr_method = 'LALR'
 
-_lr_signature = '28BD41E8F028260C6034B3F644500EAC'
+_lr_signature = '890EE8C9C30A502036FA35F7204D6725'
     
 _lr_action_items = {'IDENT':([13,18,19,33,],[22,29,32,22,]),'SEQUENCE':([0,17,],[11,11,]),'PATTERN':([0,17,],[10,10,]),'NEWLINE':([1,3,4,6,7,9,13,15,20,21,22,23,24,25,26,27,29,30,31,32,33,34,35,36,],[13,-5,-6,-4,15,17,-3,-3,-7,-10,33,-17,-11,-14,34,-18,-16,-12,-15,-8,-3,-3,-9,-13,]),'BPM':([0,17,],[5,5,]),'PATTERN_LINE':([15,34,],[26,26,]),'COLON':([5,8,10,11,],[14,16,18,19,]),'INTEGER':([14,16,18,],[23,27,31,]),'LOOP':([0,17,],[8,8,]),'$end':([0,2,12,17,28,],[-3,0,-2,-3,-1,]),}
 
@@ -26,22 +26,22 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> statements","S'",1,None,None,None),
-  ('statements -> statement NEWLINE statements','statements',3,'p_statements','yacc.py',46),
-  ('statements -> empty','statements',1,'p_statements','yacc.py',47),
-  ('empty -> <empty>','empty',0,'p_empty','yacc.py',51),
-  ('statement -> var_decl','statement',1,'p_statement','yacc.py',55),
-  ('statement -> sequence','statement',1,'p_statement','yacc.py',56),
-  ('statement -> pattern','statement',1,'p_statement','yacc.py',57),
-  ('sequence -> sequence_header NEWLINE sequence_body','sequence',3,'p_sequence','yacc.py',61),
-  ('sequence_header -> SEQUENCE COLON IDENT','sequence_header',3,'p_sequence_header','yacc.py',66),
-  ('sequence_body -> IDENT NEWLINE sequence_body','sequence_body',3,'p_sequence_body','yacc.py',70),
-  ('sequence_body -> empty','sequence_body',1,'p_sequence_body','yacc.py',71),
-  ('pattern -> pattern_header NEWLINE pattern_body','pattern',3,'p_pattern','yacc.py',75),
-  ('pattern_header -> PATTERN COLON value','pattern_header',3,'p_pattern_header','yacc.py',80),
-  ('pattern_body -> PATTERN_LINE NEWLINE pattern_body','pattern_body',3,'p_pattern_body','yacc.py',84),
-  ('pattern_body -> empty','pattern_body',1,'p_pattern_body','yacc.py',85),
-  ('value -> INTEGER','value',1,'p_value_integer','yacc.py',89),
-  ('value -> IDENT','value',1,'p_value_integer','yacc.py',90),
-  ('var_decl -> BPM COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',94),
-  ('var_decl -> LOOP COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',95),
+  ('statements -> statement NEWLINE statements','statements',3,'p_statements','yacc.py',47),
+  ('statements -> empty','statements',1,'p_statements','yacc.py',48),
+  ('empty -> <empty>','empty',0,'p_empty','yacc.py',52),
+  ('statement -> var_decl','statement',1,'p_statement','yacc.py',56),
+  ('statement -> sequence','statement',1,'p_statement','yacc.py',57),
+  ('statement -> pattern','statement',1,'p_statement','yacc.py',58),
+  ('sequence -> sequence_header NEWLINE sequence_body','sequence',3,'p_sequence','yacc.py',62),
+  ('sequence_header -> SEQUENCE COLON IDENT','sequence_header',3,'p_sequence_header','yacc.py',67),
+  ('sequence_body -> IDENT NEWLINE sequence_body','sequence_body',3,'p_sequence_body','yacc.py',71),
+  ('sequence_body -> empty','sequence_body',1,'p_sequence_body','yacc.py',72),
+  ('pattern -> pattern_header NEWLINE pattern_body','pattern',3,'p_pattern','yacc.py',76),
+  ('pattern_header -> PATTERN COLON value','pattern_header',3,'p_pattern_header','yacc.py',81),
+  ('pattern_body -> PATTERN_LINE NEWLINE pattern_body','pattern_body',3,'p_pattern_body','yacc.py',85),
+  ('pattern_body -> empty','pattern_body',1,'p_pattern_body','yacc.py',86),
+  ('value -> INTEGER','value',1,'p_value_integer','yacc.py',90),
+  ('value -> IDENT','value',1,'p_value_integer','yacc.py',91),
+  ('var_decl -> BPM COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',95),
+  ('var_decl -> LOOP COLON INTEGER','var_decl',3,'p_var_decl','yacc.py',96),
 ]

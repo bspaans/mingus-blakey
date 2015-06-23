@@ -7,7 +7,6 @@ tokens = (
   'IDENT', 
   'INTEGER',
   'COLON',
-  'DASH',
   'SEQUENCE',
   'PATTERN',
   'BPM',
@@ -20,7 +19,6 @@ tokens = (
 reserved = ['pattern', 'sequence', 'bpm', 'loop']
 t_INTEGER = r'[0-9]+'
 t_COLON = r':'
-t_DASH = r'\-'
 t_PATTERN_LINE = r'\|.*\|'
 t_NEWLINE = r'\n'
 

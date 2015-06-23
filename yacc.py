@@ -84,6 +84,8 @@ def p_pattern_header(p):
 def p_pattern_body(p):
     '''pattern_body : PATTERN_LINE NEWLINE pattern_body 
                     | empty'''
+    if p[1] is not None:
+        p[1] = p[1].replace("|", "")
     p[0] = add_to_list(p)
 
 def p_value_integer(p):
@@ -99,9 +101,13 @@ def p_var_decl(p):
 
 parser = yacc.yacc()
 
-f = open(sys.argv[1])
-s = f.read()
-print s
-#s = "bpm: 150\nloop: 3\n"
-for statement in parser.parse(s):
-    print statement
+def parse_string(s):
+    return parser.parse(s)
+
+def parse_file(f):
+    f = open(f)
+    s = f.read()
+    return parse_string(s)
+
+if __name__ == '__main__':
+    print parse_file(sys.argv[1])
