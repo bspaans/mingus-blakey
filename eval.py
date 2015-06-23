@@ -5,6 +5,17 @@ import sys
 from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.containers import Track, Bar, NoteContainer, Note
 
+class Pattern(object):
+    def __init__(self, name):
+        self.name = name
+        self.body = []
+        self.attributes = {}
+    def copy_current_attributes_from_context(self, ctx):
+        self.attributes = ctx.copy_attributes()
+    def set_body(self, body):
+        self.body = body
+
+
 class Context(object):
     def __init__(self):
         self.context = {}
@@ -13,6 +24,8 @@ class Context(object):
         self.attr[name] = value
     def get_attr(self, name):
         return self.attr[name]
+    def copy_attributes(self):
+        return self.attr.copy()
     def set(self, name, pattern):
         self.context[name] = pattern
     def get(self, name):
@@ -47,13 +60,19 @@ def eval_pattern_body(body):
 
 def eval_pattern(ctx, pattern):
     body = eval_pattern_body(pattern.body)
-    ctx.set(pattern.name, body)
+    result = Pattern(pattern.name)
+    result.copy_current_attributes_from_context(ctx)
+    result.set_body(body)
+    ctx.set(pattern.name, result)
 
 def eval_sequence(ctx, sequence):
     result = []
     for pattern in sequence.body:
         ptrn = ctx.get(pattern)
-        result.extend(ptrn)
+        if type(ptrn) is Pattern:
+            result.append(ptrn)
+        else:
+            result.extend(ptrn)
     ctx.set(sequence.name, result)
 
 def get_result_of_last_statement(ctx, statement):
@@ -83,16 +102,20 @@ def convert_pattern_to_mingus_track(ctx, pattern):
     resolution = ctx.get_attr("resolution")
     result = Track()
     result.instrument = MidiPercussionInstrument()
-    for beat in pattern:
-        nc = NoteContainer()
-        if beat is None:
+    sequence = pattern 
+    if type(pattern) is not list:
+        sequence = [pattern]
+    for pattern in sequence:
+        for beat in pattern.body:
+            nc = NoteContainer()
+            if beat is None:
+                result.add_notes(nc, resolution)
+                continue
+            for b in beat:
+                note = convert_pattern_char_to_note(b)
+                note.channel = 9
+                nc.add_note(note)
             result.add_notes(nc, resolution)
-            continue
-        for b in beat:
-            note = convert_pattern_char_to_note(b)
-            note.channel = 9
-            nc.add_note(note)
-        result.add_notes(nc, resolution)
     return result
 
 def eval_statements(statements):
