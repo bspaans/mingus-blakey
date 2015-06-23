@@ -122,7 +122,7 @@ def parse_string(s):
 def parse_file(f):
     f = open(f)
     s = f.read()
-    return parse_string(s)
+    return parse_string(s + "\n")
 
 if __name__ == '__main__':
     print parse_file(sys.argv[1])

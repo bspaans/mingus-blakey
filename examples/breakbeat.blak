@@ -12,6 +12,13 @@ resolution: 8
 pattern: hihat_8
 |hhhhhhhh|
 
+pattern: hihat_8_start_with_crash
+|Chhhhhhh|
+
+resolution: 12
+pattern: hihat_12
+|hhhhhhhhhhhh|
+
 resolution: 16
 pattern: hihat_16
 |hhhhhhhhhhhhhhhh|
@@ -19,13 +26,32 @@ pattern: hihat_16
 pattern: partA
 |b---s-bsbsb-s---|
 
-combine: partA_with_hihat
-hihat_4
+pattern: partB
+|b---s-bsbsbtMmml|
+
+
+combine: partA_with_crash
+hihat_8_start_with_crash
 partA
 
+combine: partA_with_hihat
+hihat_8
+partA
+
+combine: partB_with_hihat
+hihat_16
+partB
+
+
 sequence: beat
+partA_with_crash
 partA_with_hihat 
 partA_with_hihat 
-partA_with_hihat 
-partA_with_hihat 
+partB_with_hihat 
+
+combine: song
+beat
+beat
+beat
+beat
 

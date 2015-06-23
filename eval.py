@@ -7,7 +7,7 @@ from fractions import gcd
 from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.containers import Track, Bar, NoteContainer, Note
 
-def lcm(self, *numbers):
+def lcm(*numbers):
     """Return lowest common multiple."""    
     def lcm(a, b):
         return (a * b) // gcd(a, b)
@@ -44,17 +44,21 @@ class Pattern(object):
         current_resolution = self.get_resolution()
         if current_resolution == new_resolution:
             return self.body
-
         new_resolution = lcm(current_resolution, new_resolution)
         beat_every = new_resolution / current_resolution
         new_body = []
         j = 0
-        for i in xrange(new_resolution):
+        i = 0
+        while j < len(self.body):
             if i % beat_every == 0:
                 new_body.append(self.body[j])
                 j += 1
             else:
                 new_body.append(None)
+            i += 1
+        while i % beat_every != 0:
+            new_body.append(None)
+            i += 1
         self.body = new_body
         self.attributes["resolution"] = new_resolution
 
@@ -117,14 +121,14 @@ def eval_section(ctx, section):
     elif section.section_type == 'sequence':
         return eval_sequence(ctx, section)
 
+def sequence_two_patterns(pattern1, pattern2):
+    resample_patterns(pattern1, pattern2)
+    pattern1.body.extend(pattern2.body)
+    return pattern1
+
 def eval_sequence(ctx, sequence):
-    result = []
-    for pattern in sequence.body:
-        ptrn = ctx.get(pattern)
-        if type(ptrn) is Pattern:
-            result.append(ptrn.copy())
-        else:
-            result.extend(map(lambda p: p.copy(), ptrn))
+    patterns = lookup_patterns(ctx, sequence.body)
+    result = reduce(sequence_two_patterns, patterns)
     ctx.set(sequence.name, result)
 
 
@@ -133,18 +137,21 @@ def lookup_patterns(ctx, patterns):
     for p in patterns:
         ptrn = ctx.get(p)
         if type(ptrn) is Pattern:
-            result.append(ptrn)
+            result.append(ptrn.copy())
         else:
-            result.extend(ptrn)
+            result.extend(map(lambda p: p.copy(), ptrn))
     return result
 
-def merge_two_patterns(pattern1, pattern2):
+def resample_patterns(pattern1, pattern2):
     resolution1 = pattern1.get_resolution()
     resolution2 = pattern2.get_resolution()
     if resolution1 != resolution2:
         new_resolution = lcm(resolution1, resolution2)
         pattern1.resample(new_resolution)
         pattern2.resample(new_resolution)
+
+def merge_two_patterns(pattern1, pattern2):
+    resample_patterns(pattern1, pattern2)
     bodies = [pattern1.body, pattern2.body]
     pattern1.set_body(merge_pattern_bodies(bodies))
     return pattern1
@@ -175,6 +182,14 @@ def convert_pattern_char_to_note(char):
         return percussion.acoustic_snare()
     elif char == 'C':
         return percussion.crash_cymbal_1()
+    elif char == 't':
+        return percussion.high_tom()
+    elif char == 'M':
+        return percussion.hi_mid_tom()
+    elif char == 'm':
+        return percussion.low_mid_tom()
+    elif char == 'l':
+        return percussion.low_floor_tom()
     print "Error: unknown symbol", char
     sys.exit(1)
 
@@ -190,13 +205,23 @@ def convert_pattern_to_mingus_track(ctx, pattern):
         for beat in pattern.body:
             nc = NoteContainer()
             if beat is None:
-                result.add_notes(nc, resolution)
+                placed = result.add_notes(nc, resolution)
                 continue
             for b in beat:
                 note = convert_pattern_char_to_note(b)
                 note.channel = 9
                 nc.add_note(note)
-            result.add_notes(nc, resolution)
+            placed = result.add_notes(nc, resolution)
+            if not placed:
+                result.bars[-1].current_beat = result.bars[-1].length
+                max_length = result.bars[-1].length - \
+                        result.bars[-1].current_beat 
+                if max_length == 0.0:
+                    print "wut"
+                    continue
+                else:
+                    print result.add_notes(nc, 1.0 / max_length)
+                    print max_length, 1.0 / max_length, resolution, result.bars[-1].current_beat +  max_length
     return result
 
 def eval_statements(statements):
