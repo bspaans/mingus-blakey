@@ -99,13 +99,13 @@ def convert_pattern_char_to_note(char):
 
 
 def convert_pattern_to_mingus_track(ctx, pattern):
-    resolution = ctx.get_attr("resolution")
     result = Track()
     result.instrument = MidiPercussionInstrument()
     sequence = pattern 
     if type(pattern) is not list:
         sequence = [pattern]
     for pattern in sequence:
+        resolution = pattern.attributes["resolution"]
         for beat in pattern.body:
             nc = NoteContainer()
             if beat is None:

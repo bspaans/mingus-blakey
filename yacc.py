@@ -97,7 +97,9 @@ def p_value_integer(p):
 
 def p_var_decl(p):
     '''var_decl : BPM COLON INTEGER
-                | LOOP COLON INTEGER'''
+                | LOOP COLON INTEGER
+                | RESOLUTION COLON INTEGER
+                '''
     p[0] = VarDecl(p[1], p[3])
 
 

@@ -11,13 +11,14 @@ tokens = (
   'PATTERN',
   'BPM',
   'LOOP', 
+  'RESOLUTION',
   'PATTERN_LINE',
   'NEWLINE',
 )
 
 
-RESERVED = ['pattern', 'sequence', 'bpm', 'loop']
-INTEGER_VARS = ['bpm', 'loop']
+RESERVED = ['pattern', 'sequence', 'bpm', 'loop', 'resolution']
+INTEGER_VARS = ['bpm', 'loop', 'resolution']
 t_INTEGER = r'[0-9]+'
 t_COLON = r':'
 t_PATTERN_LINE = r'\|.*\|'
