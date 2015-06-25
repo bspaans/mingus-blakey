@@ -3,6 +3,7 @@
 import yacc
 import sys
 import math
+import random
 from fractions import gcd
 from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.containers import Track, Bar, NoteContainer, Note
@@ -62,6 +63,11 @@ class Pattern(object):
         self.body = new_body
         self.attributes["resolution"] = new_resolution
 
+class Choice(object):
+    def __init__(self, patterns):
+        self.patterns = patterns
+    def choice(self):
+        return random.choice(self.patterns).copy()
 
 class Context(object):
     def __init__(self):
@@ -120,6 +126,8 @@ def eval_section(ctx, section):
         return eval_combine(ctx, section)
     elif section.section_type == 'sequence':
         return eval_sequence(ctx, section)
+    elif section.section_type == 'choice':
+        return eval_choice(ctx, section)
 
 def sequence_two_patterns(pattern1, pattern2):
     resample_patterns(pattern1, pattern2)
@@ -131,6 +139,10 @@ def eval_sequence(ctx, sequence):
     result = reduce(sequence_two_patterns, patterns)
     ctx.set(sequence.name, result)
 
+def eval_choice(ctx, sequence):
+    patterns = lookup_patterns(ctx, sequence.body)
+    ctx.set(sequence.name, Choice(patterns))
+    
 
 def lookup_patterns(ctx, patterns):
     result = []
@@ -138,6 +150,8 @@ def lookup_patterns(ctx, patterns):
         ptrn = ctx.get(p)
         if type(ptrn) is Pattern:
             result.append(ptrn.copy())
+        elif type(ptrn) is Choice:
+            result.append(ptrn.choice())
         else:
             result.extend(map(lambda p: p.copy(), ptrn))
     return result
@@ -198,7 +212,9 @@ def convert_pattern_to_mingus_track(ctx, pattern):
     result = Track()
     result.instrument = MidiPercussionInstrument()
     sequence = pattern 
-    if type(pattern) is not list:
+    if type(pattern) is Choice:
+        sequence = [pattern.choice()]
+    elif type(pattern) is not list:
         sequence = [pattern]
     for pattern in sequence:
         resolution = pattern.attributes["resolution"]

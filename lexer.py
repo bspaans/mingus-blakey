@@ -10,6 +10,7 @@ tokens = (
   'SEQUENCE',
   'PATTERN',
   'COMBINE',
+  'CHOICE',
   'BPM',
   'LOOP', 
   'RESOLUTION',
@@ -18,7 +19,7 @@ tokens = (
 )
 
 
-RESERVED = ['pattern', 'sequence', 'combine', 'bpm', 'loop', 'resolution']
+RESERVED = ['pattern', 'sequence', 'combine', 'bpm', 'loop', 'resolution', 'choice']
 INTEGER_VARS = ['bpm', 'loop', 'resolution']
 t_INTEGER = r'[0-9]+'
 t_COLON = r':'

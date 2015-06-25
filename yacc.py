@@ -75,7 +75,8 @@ def p_section_header(p):
 
 def p_section_type(p):
     '''section_type : SEQUENCE
-                    | COMBINE'''
+                    | COMBINE
+		    | CHOICE'''
     p[0] = p[1]
 
 def p_section_body(p):

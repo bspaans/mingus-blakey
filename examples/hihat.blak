@@ -1,0 +1,26 @@
+bpm: 150
+
+resolution: 4
+
+pattern: hihat_4
+|hhhh|
+
+pattern: hihat_4_open_1
+|Hhhh|
+
+pattern: hihat_4_open_2
+|hHhh|
+
+pattern: hihat_4_open_3
+|hhHh|
+
+pattern: hihat_4_open_4
+|hhhH|
+
+choice: hihat_4_random_open
+hihat_4_open_1
+hihat_4_open_2
+hihat_4_open_3
+hihat_4_open_4
+
+
