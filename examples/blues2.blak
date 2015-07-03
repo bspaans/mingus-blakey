@@ -1,0 +1,36 @@
+bpm: 60
+
+resolution: 12
+
+pattern: opening
+|C--h-hH--h--|
+|b-----s----b|
+
+pattern: basic
+|h--h-hH--h--|
+|b-----s-----|
+
+pattern: accented1
+|h-Hh-hH--h--|
+|b-----s----b|
+
+pattern: accented2
+|h--h-hH--H--|
+|b-----s--s-b|
+
+choice: basic_or_accented
+basic
+basic
+accented1
+accented2
+
+combine: block
+opening
+basic_or_accented
+basic_or_accented
+basic_or_accented
+
+sequence: song
+block
+block
+block
