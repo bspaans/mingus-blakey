@@ -24,7 +24,7 @@ basic
 accented1
 accented2
 
-combine: block
+sequence: block
 opening
 basic_or_accented
 basic_or_accented

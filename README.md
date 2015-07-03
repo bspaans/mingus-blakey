@@ -112,3 +112,10 @@ simple_beat_regular
 
 # Percussion mapping
 
+TODO
+
+# Running tests
+
+```
+nosetests
+```

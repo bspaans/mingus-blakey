@@ -257,6 +257,9 @@ def eval_statements(statements):
 def eval_file(file):
     return eval_statements(yacc.parse_file(file))
 
+def eval_string(string):
+    return eval_statements(yacc.parse_string(string))
+
 
 if __name__ == '__main__':
     print eval_file(sys.argv[1])
