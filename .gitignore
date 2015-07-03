@@ -2,3 +2,6 @@
 *.wav
 *.mid
 *.swp
+build/
+dist/
+blakey.egg-info/
