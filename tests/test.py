@@ -49,3 +49,4 @@ random_beat
     assert nr_of_bars == expected_nr_of_bars, "Not enough bars, mate"
     assert nr_beat1 != expected_nr_of_bars, "Doesn't look random to me, mate"
     assert nr_beat1 != 0, "Doesn't look random to me, mate"
+    assert ctx.get_attr('bpm') == 150, "BPM"

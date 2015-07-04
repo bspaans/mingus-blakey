@@ -31,17 +31,17 @@ def to_midi(filename, track, bpm = 120):
     midi_file_out.write_Track(filename, track, bpm)
     print "Written", filename
 
-def to_wav(input, output, track, options):
-    synth_options = synth.options.Options(input, output)
+def to_wav(input, output, track, options, bpm):
+    synth_options = synth.options.Options(input, output, bpm)
     synth_options.write_wave = True
     synth_options.write_wave_to_stdout = options.write_wave_to_stdout
 
     s = Synthesizer(synth_options).load_from_midi(input)
     WaveWriter(synth_options).output(s)
 
-def stream(input, options):
+def stream(input, options, bpm):
     from synth import stream
-    synth_options = synth.options.Options()
+    synth_options = synth.options.Options(bpm = bpm)
     s = Synthesizer(synth_options).load_from_midi(input)
     stream.stream_to_pyaudio(synth_options, s)
 
@@ -66,14 +66,15 @@ def get_args():
 def main():
     options = get_args()
     track, ctx = eval.eval_file(options.input)
+    bpm = ctx.get_attr('bpm')
 
     midi_file = options.get_output_file('.mid')
     to_midi(midi_file, track, ctx.get_attr("bpm"))
 
     if options.write_wave:
-        to_wav(midi_file, options.get_output_file('.wav'), track, options)
+        to_wav(midi_file, options.get_output_file('.wav'), track, options, bpm)
     if options.write_stream:
-        stream(midi_file, options)
+        stream(midi_file, options, bpm)
 
 if __name__ == '__main__':
     main()
