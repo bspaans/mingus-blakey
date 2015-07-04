@@ -15,7 +15,48 @@ python setup.py install
 blakey INPUTFILE [OUTPUTFILE]
 ```
 
-The input file should be in the format described below. Defining the output file is optional and defaults to the input files path, with its extension replaced by '.mid'.
+The input file format is described below. 
+
+A midi file is always created as part of the output. The location can be specified and defaults to the input file's location with its extension replaced by '.mid'. For example, these two commands do the same thing:
+
+```
+blakey examples/blues.blak examples/blues.mid
+blakey examples/blues.blak
+```
+
+
+Additionally, you can also output a wave file with `--wave` or `-w`:
+
+```
+blakey INPUTFILE [OUTPUTFILE] --wave
+```
+
+This will create both the midi file and the wav file. 
+
+```
+blakey examples/blues.blak --wave
+```
+
+Will create both `examples/blues.mid` and `examples/blues.wav`.
+
+```
+blakey examples/blues.blak other_path.mid --wave
+```
+
+Will create `other_path.mid` and `other_path.wav`
+
+If you have pyaudio installed you can also stream the output directly with `--stream` or `-s`:
+
+```
+blakey examples/blues.blak --stream
+```
+
+If you don't have pyaudio you can still stream the audio by piping it into aplay:
+
+```
+blakey examples/blues.blak --wave --stdout | aplay -f S16_LE -r 44100 -c 1
+```
+
 
 # Write drum patterns as text
 
@@ -108,6 +149,31 @@ simple_beat_opening
 simple_beat_regular
 simple_beat_regular
 simple_beat_regular
+```
+
+# Choice patterns
+
+The choice declaration can be used to pick a random sequence or pattern:
+
+```
+bpm: 120
+resolution: 8
+
+pattern: hihat
+|h-h-h-h-|
+
+pattern: hihat2
+|-h-h-h-h|
+
+choice: surprise_me
+hihat
+hihat2
+
+sequence: surprise_song
+surprise_me
+surprise_me
+surprise_me
+surprise_me
 ```
 
 # Percussion mapping

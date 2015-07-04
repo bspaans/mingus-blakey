@@ -16,6 +16,7 @@ setup(name= "blakey",
     url = "https://github.com/bspaans/mingus-blakey",
     packages = ['blakey'],
     license="GPLv3",
+    install_requires = ['mingus==0.5.1', 'softsynth==0.3.3'],
     classifiers = [
         'Intended Audience :: Developers',
         'Intended Audience :: Other Audience',
