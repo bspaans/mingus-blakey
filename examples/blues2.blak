@@ -1,4 +1,4 @@
-bpm: 120
+bpm: 80
 
 resolution: 12
 
@@ -18,11 +18,23 @@ pattern: accented2
 |h--h-hH--H--|
 |b-----s--s-b|
 
+pattern: ending1
+|h--h-hH--H--|
+|b-----s-bsss|
+
+pattern: ending2
+|h--h-hH--H--|
+|b-----st-sMm|
+
 choice: basic_or_accented
 basic
 basic
 accented1
 accented2
+
+choice: ending
+ending1
+ending2
 
 sequence: block
 opening
@@ -30,7 +42,12 @@ basic_or_accented
 basic_or_accented
 basic_or_accented
 
+sequence: block_with_ending
+opening
+basic_or_accented
+basic_or_accented
+ending
+
 sequence: song
 block
-block
-block
+block_with_ending

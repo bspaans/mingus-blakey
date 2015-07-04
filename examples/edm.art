@@ -1,0 +1,76 @@
+bpm: 190
+
+resolution: 8
+
+pattern: bass_regular
+|b-b-b-b-|
+
+pattern: bass_accent
+|b-b-b-bb|
+
+pattern: hihat1
+|h-------|
+
+pattern: hihat2
+|---H----|
+
+pattern: snare
+|----s---|
+
+resolution: 16
+
+pattern: beat
+|h-h-h-h-h-h-h-h-h-h-h-h-h-h-h-h-|
+|b-b-sbb-s-s-s--bb-b-s-bsbsb-s---|
+
+combine: bass_hihat1
+hihat1
+bass_regular
+
+combine: bass_hihat2
+hihat2
+bass_regular
+
+combine: bass_hihat2_snare
+hihat2
+bass_regular
+snare
+
+sequence: bass
+bass_regular
+bass_regular
+bass_regular
+bass_regular
+
+sequence: bass_and_hihat1
+bass_hihat1
+bass_hihat1
+bass_hihat1
+bass_hihat1
+
+sequence: bass_and_hihat2
+bass_hihat2
+bass_hihat2
+bass_hihat2
+bass_hihat2
+
+sequence: bass_and_hihat2_snare
+bass_hihat2_snare
+bass_hihat2_snare
+bass_hihat2_snare
+bass_hihat2_snare
+
+sequence: song
+bass
+bass_and_hihat1
+bass_and_hihat2
+bass_and_hihat2_snare
+beat
+beat
+beat
+beat
+beat
+beat
+beat
+beat
+beat
