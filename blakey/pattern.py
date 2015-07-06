@@ -4,10 +4,13 @@ import evaluable
 import functions
 from context import Context
 from mingus.containers.instrument import MidiPercussionInstrument
-from mingus.containers import Track, Bar, NoteContainer, Note
 
 class PercussionPattern(evaluable.Pattern):
-    pass
+    def get_ticks(self):
+        for ticks in self.body:
+            for note in ticks:
+                note.channel = '9'
+        return ticks
 
 class PercussionPatternParser(evaluable.PatternParser):
 
@@ -55,40 +58,3 @@ class PercussionPatternParser(evaluable.PatternParser):
                     "Error: unknown symbol in percussion pattern '%s'" % char
         return evaluable.Tick().add_note(self.perc_mapping[char])
 
-
-
-ctx = Context()
-ctx.set_attr("resolution", 8)
-ctx.set_functions(functions.stdlib)
-ctx.set("test", PercussionPatternParser("test", ctx).parse(["h-h-h-h-"]))
-
-func = evaluable.Function("test_repeat", ctx)
-func.set_function("sequence")
-func.set_patterns(["test", "test"])
-
-ctx.set("test_repeat", func)
-patterns = functions.call_eval_from_python(ctx, "test_repeat")
-
-def convert_pattern_to_mingus_track(ctx, pattern):
-    result = Track()
-    result.instrument = MidiPercussionInstrument()
-    for pattern in patterns:
-        resolution = pattern.attributes["resolution"]
-        for tick in pattern.get_ticks():
-            nc = NoteContainer(tick.notes)
-            for n in nc.notes:
-                n.channel = 9
-            placed = result.add_notes(nc, resolution)
-            if not placed:
-                result.bars[-1].current_beat = result.bars[-1].length
-                max_length = result.bars[-1].length - \
-                        result.bars[-1].current_beat 
-                if max_length == 0.0:
-                    print "wut"
-                    continue
-                else:
-                    print result.add_notes(nc, 1.0 / max_length)
-                    print max_length, 1.0 / max_length, resolution, result.bars[-1].current_beat +  max_length
-    return result
-
-print convert_pattern_to_mingus_track(ctx, patterns)

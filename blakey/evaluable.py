@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+from fractions import gcd
 
 
 class Evaluable(object):
