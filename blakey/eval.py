@@ -2,6 +2,7 @@
 
 import yacc
 import sys
+import functions
 from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.containers import Track, Bar, NoteContainer, Note
 
@@ -20,10 +21,10 @@ def get_result_of_last_statement(ctx, statement):
     if statement is None:
         print "Nothing to do, bozo"
         sys.exit(0)
-    stmt = ctx.get(statement)
-    return convert_pattern_to_mingus_track(ctx, stmt)
+    patterns = functions.call_eval_from_python(ctx, statement)
+    return convert_pattern_to_mingus_track(ctx, patterns), ctx
 
-def convert_pattern_to_mingus_track(ctx, pattern):
+def convert_pattern_to_mingus_track(ctx, patterns):
     result = Track()
     result.instrument = MidiPercussionInstrument()
     for pattern in patterns:
@@ -42,6 +43,10 @@ def convert_pattern_to_mingus_track(ctx, pattern):
                     print result.add_notes(nc, 1.0 / max_length)
                     print max_length, 1.0 / max_length, resolution, result.bars[-1].current_beat +  max_length
     return result
+
+def eval_statements(parse_result):
+    ctx, last_statement = parse_result 
+    return get_result_of_last_statement(ctx, last_statement)
 
 def eval_file(file):
     return eval_statements(yacc.parse_file(file))

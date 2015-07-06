@@ -8,7 +8,6 @@ class Context(object):
         self.functions = {}
         self.stdlib = functions.stdlib
         self.attr = {"resolution": 8, "bpm": 120}
-        self.last_seen_statement = None
         self.init()
     def init(self):
         pass
@@ -33,7 +32,7 @@ class Context(object):
             self.functions[name] = func
     def __str__(self):
         return str({"attributes": self.attr, "functions": self.functions,
-            "context": self.context, "last_seen": self.last_seen_statement})
+            "context": self.context})
     def __repr__(self):
         return str(self)
 

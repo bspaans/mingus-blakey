@@ -7,10 +7,10 @@ from mingus.containers.instrument import MidiPercussionInstrument
 
 class PercussionPattern(evaluable.Pattern):
     def get_ticks(self):
-        for ticks in self.body:
-            for note in ticks:
-                note.channel = '9'
-        return ticks
+        for tick in self.body:
+            for note in tick.notes:
+                note.channel = 9
+        return self.body
 
 class PercussionPatternParser(evaluable.PatternParser):
 

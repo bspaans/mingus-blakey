@@ -109,11 +109,13 @@ def parse_string_with_context(s, ctx):
 def parse_file(f):
     f = open(f)
     s = f.read()
+    f.close()
     return parse_string(s + "\n")
 
 def parse_file_with_context(s, ctx):
     f = open(f)
     s = f.read()
+    f.close()
     return parse_string_with_context(s + "\n", ctx)
 
 if __name__ == '__main__':
