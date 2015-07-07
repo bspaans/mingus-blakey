@@ -1,16 +1,12 @@
 #!/usr/bin/env python
 
 import argparse
-from os import path
+import os
 
-from mingus.containers import Track, Bar, NoteContainer, Note
-from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.midi import midi_file_out
-
 from synth.wave_writer import WaveWriter
 from synth.synthesizer import Synthesizer
 import synth.options
-
 import eval
 
 class Options:
@@ -23,7 +19,7 @@ class Options:
 
     def get_output_file(self, default_extension = '.mid'):
         if self.output is None:
-            input_base = path.splitext(self.input)[0]
+            input_base = os.path.splitext(self.input)[0]
             return input_base + default_extension
         return self.output
 
@@ -35,7 +31,6 @@ def to_wav(input, output, track, options, bpm):
     synth_options = synth.options.Options(input, output, bpm)
     synth_options.write_wave = True
     synth_options.write_wave_to_stdout = options.write_wave_to_stdout
-
     s = Synthesizer(synth_options).load_from_midi(input)
     WaveWriter(synth_options).output(s)
 
@@ -60,8 +55,6 @@ def get_args():
             help='Also write PCM data to stdout. Only valid in conjunction with the --wave flag.')
     args = parser.parse_args()
     return Options(args.input[0], args.output, args.wave, args.stream)
-
-
 
 def main():
     options = get_args()

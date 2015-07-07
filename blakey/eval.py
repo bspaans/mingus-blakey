@@ -31,16 +31,11 @@ def convert_pattern_to_mingus_track(ctx, patterns):
                     print max_length, 1.0 / max_length, resolution, result.bars[-1].current_beat +  max_length
     return result
 
-def eval_statements(parse_result):
-    ctx, last_statement = parse_result 
-    return get_result_of_last_statement(ctx, last_statement)
-
 def eval_file(file):
-    return eval_statements(yacc.parse_file(file))
+    return get_result_of_last_statement(*yacc.parse_file(file))
 
 def eval_string(string):
-    return eval_statements(yacc.parse_string(string))
-
+    return get_result_of_last_statement(*yacc.parse_string(string))
 
 if __name__ == '__main__':
     print eval_file(sys.argv[1])

@@ -36,12 +36,10 @@ class Tick(object):
         self.add_note(note)
     def copy(self):
         t = Tick()
-        for n in self.notes:
-            t.notes.append(n)
+        t.notes.extend(self.notes)
         return t
     def extend(self, other_tick):
-        for note in other_tick.notes:
-            self.notes.append(note)
+        self.notes.extend(other_tick.notes)
 
 class Pattern(Evaluable):
     def init(self):
