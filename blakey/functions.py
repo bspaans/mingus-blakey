@@ -2,15 +2,22 @@
 
 import random
 import evaluable
+import resampler
 import stacktrace
 
 def _eval_choice(ctx, name, patterns):
     return [random.choice(patterns)]
 
-
 def _eval_sequence(ctx, name, patterns):
     return patterns
 
+def _eval_combine(ctx, name, patterns):
+    compiled_patterns = []
+    for p in patterns:
+        compiled_patterns.extend(call_eval_from_python(ctx, p))
+    r = resampler.Resampler()
+    result = reduce(r.resample_and_merge, compiled_patterns)
+    return result
 
 def _eval(ctx, name, patterns):
     trace = stacktrace.StackTrace()
@@ -24,8 +31,11 @@ def _eval(ctx, name, patterns):
             if elem.is_terminus():
                 result.append(elem)
             else:
-                print elem.eval(), e_level, e
-                stack.extend(map(lambda s: (e_level + 1, s), reversed(elem.eval())))
+                evaled = elem.eval()
+                if type(evaled) == list:
+                    stack.extend(map(lambda e: (e_level + 1, e), evaled))
+                else:
+                    result.append(evaled)
         except Exception, e:
             trace.print_to_stderr(e)
     return result
@@ -42,5 +52,6 @@ def call_eval_from_python(ctx, name):
 stdlib = {
         "choice": _eval_choice,
         "sequence": _eval_sequence, 
+        "combine": _eval_combine,
         "eval": _eval
 }

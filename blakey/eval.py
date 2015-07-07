@@ -6,22 +6,11 @@ import functions
 from mingus.containers.instrument import MidiPercussionInstrument
 from mingus.containers import Track, Bar, NoteContainer, Note
 
-def merge_two_patterns(pattern1, pattern2):
-    resample_patterns(pattern1, pattern2)
-    bodies = [pattern1.body, pattern2.body]
-    pattern1.set_body(merge_pattern_bodies(bodies))
-    return pattern1
-
-def eval_combine(ctx, section):
-    patterns = lookup_patterns(ctx, section.body)
-    result = reduce(merge_two_patterns, patterns)
-    ctx.set(section.name, result)
-
 def get_result_of_last_statement(ctx, statement):
     if statement is None:
-        print "Nothing to do, bozo"
-        sys.exit(0)
-    patterns = functions.call_eval_from_python(ctx, statement)
+        patterns = []
+    else: 
+        patterns = functions.call_eval_from_python(ctx, statement)
     return convert_pattern_to_mingus_track(ctx, patterns), ctx
 
 def convert_pattern_to_mingus_track(ctx, patterns):

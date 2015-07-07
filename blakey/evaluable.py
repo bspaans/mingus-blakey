@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 
-from fractions import gcd
 
 
 class Evaluable(object):
@@ -40,6 +39,8 @@ class Tick(object):
     def add_note(self, note):
         self.notes.append(note)
         return self
+    def append(self, note):
+        self.add_note(note)
     def copy(self):
         t = Tick()
         for n in self.notes:
@@ -70,44 +71,13 @@ class Pattern(Evaluable):
         return []
     def get_ticks(self):
         return self.body
-
     def copy(self):
-        p = Pattern(self.name, self.ctx)
+        p = self.__class__(self.name, self.ctx)
         p.set_body([])
         for beat in self.body:
             p.append_to_body(beat.copy())
         p.attributes = self.attributes.copy()
         return p 
-
-    def resample_patterns(self, pattern):
-        p1 = self.copy()
-        p2 = self.copy()
-        new_resolution = lcm(self.get_resolution(), new_resolution)
-        if p1.get_resolution() != new_resolution:
-            p1.resample()
-        if p2.get_resolution() != new_resolution:
-            p2.resample()
-        return p1, p2
-
-    def resample(self, new_resolution):
-        self.set_body(self.get_resampled_body(new_resolution))
-        self.attributes["resolution"] = new_resolution
-
-    def get_resampled_body(self, new_resolution):
-        beat_every = new_resolution / self.get_resolution()
-        new_body = []
-        i, j = 0, 0
-        while j < len(self.body):
-            if i % beat_every == 0:
-                new_body.append(self.body[j])
-                j += 1
-            else:
-                new_body.append(None)
-            i += 1
-        while i % beat_every != 0:
-            new_body.append(None)
-            i += 1
-        return new_body
 
 class PatternParser(object):
     def __init__(self, name, ctx):
@@ -119,8 +89,3 @@ class PatternParser(object):
     def parse(self, lines):
         pass
 
-def lcm(*numbers):
-    """Return lowest common multiple."""    
-    def lcm(a, b):
-        return (a * b) // gcd(a, b)
-    return reduce(lcm, numbers, 1)
