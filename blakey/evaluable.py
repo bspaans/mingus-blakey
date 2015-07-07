@@ -1,22 +1,16 @@
 #!/usr/bin/env python
 
-
-
 class Evaluable(object):
     def __init__(self, name, ctx):
         self.name = name
         self.ctx = ctx
         self.init()
-    def init(self):
-        pass
-    def eval(self):
-        return []
-    def is_terminus(self):
-        return False
+    def init(self): pass
+    def eval(self): return []
+    def is_terminus(self): return False
 
 class BlakeyException(Exception):
     pass
-
 
 class Function(Evaluable):
     def init(self):
@@ -31,7 +25,6 @@ class Function(Evaluable):
             raise Exception, "function has not been set for %s" % self.name
         func = self.ctx.get_function(self.function)
         return func(self.ctx, self.name, self.patterns)
-
 
 class Tick(object):
     def __init__(self):
@@ -50,7 +43,6 @@ class Tick(object):
         for note in other_tick.notes:
             self.notes.append(note)
 
-
 class Pattern(Evaluable):
     def init(self):
         self.body = []
@@ -67,10 +59,8 @@ class Pattern(Evaluable):
         return self.attributes["resolution"]
     def get_bpm(self):
         return self.attributes["bpm"]
-    def eval(self):
-        return []
-    def get_ticks(self):
-        return self.body
+    def eval(self): return []
+    def get_ticks(self): return self.body
     def copy(self):
         p = self.__class__(self.name, self.ctx)
         p.set_body([])
@@ -84,8 +74,6 @@ class PatternParser(object):
         self.name = name
         self.ctx = ctx
         self.init()
-    def init(self):
-        pass
-    def parse(self, lines):
-        pass
+    def init(self): pass
+    def parse(self, lines): pass
 

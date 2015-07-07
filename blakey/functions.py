@@ -34,8 +34,10 @@ def _eval(ctx, name, patterns):
                 evaled = elem.eval()
                 if type(evaled) == list:
                     stack.extend(map(lambda e: (e_level + 1, e), evaled))
-                else:
+                elif evaled.is_terminus():
                     result.append(evaled)
+                else:
+                    raise evaluable.BlakeyException, "unexpected item in bagging area: %s" % (str(evaled))
         except Exception, e:
             trace.print_to_stderr(e)
     return result

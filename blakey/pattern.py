@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
 import evaluable
-import functions
-from context import Context
 from mingus.containers.instrument import MidiPercussionInstrument
 
 class PercussionPattern(evaluable.Pattern):

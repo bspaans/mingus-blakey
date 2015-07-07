@@ -30,7 +30,6 @@ class Resampler(object):
         return new_body
 
 def lcm(*numbers):
-    """Return lowest common multiple."""    
     def lcm(a, b):
         return (a * b) // gcd(a, b)
     return reduce(lcm, numbers, 1)

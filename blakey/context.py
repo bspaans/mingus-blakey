@@ -19,6 +19,9 @@ class Context(object):
         return self.attr.copy()
     def set(self, name, pattern):
         self.context[name] = pattern
+    def set_functions(self, functions):
+        for name, func in functions.iteritems():
+            self.functions[name] = func
     def get(self, name):
         if name not in self.context:
             raise Exception, "pattern %s is undefined" % name
@@ -27,12 +30,8 @@ class Context(object):
         if name not in self.functions:
             raise Exception, "function %s is undefined" % name
         return self.functions[name]
-    def set_functions(self, functions):
-        for name, func in functions.iteritems():
-            self.functions[name] = func
     def __str__(self):
-        return str({"attributes": self.attr, "functions": self.functions,
-            "context": self.context})
+        return str({"attributes": self.attr, "functions": self.functions, "context": self.context})
     def __repr__(self):
         return str(self)
 
