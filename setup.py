@@ -8,7 +8,7 @@ except ImportError:
         + " install setuptools).")
 
 setup(name= "blakey",
-    version = "0.1.0",
+    version = "0.2.0",
     description = "Programmable drum machine",
     long_description = """Programmable drum machine""",
     author = "Bart Spaans",
