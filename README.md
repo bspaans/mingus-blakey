@@ -6,6 +6,7 @@ The Blakey Drum Computer
 ```
 pip install ply
 pip install mingus
+pip install softsynth
 python setup.py install
 ```
 
